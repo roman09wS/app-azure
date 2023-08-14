@@ -1,0 +1,5 @@
+CREATE DATABASE appAzure;
+USE appAzure;
+CREATE TABLE nombre_tabla(
+    id_nombre INT UNSIGNED AUTO_INCREMENT PRIMARY KEY
+);
