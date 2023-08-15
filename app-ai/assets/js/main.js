@@ -7,6 +7,7 @@ const widthInput = document.getElementById('width');
 const heightInput = document.getElementById('height');
 const imageUrlInput = document.getElementById('imageUrl');
 const deleteUrl = document.getElementById('deleteUrl');
+
 drawButton.addEventListener('click', () => {
     const left = parseInt(leftInput.value);
     const top = parseInt(topInput.value);
@@ -18,23 +19,22 @@ drawButton.addEventListener('click', () => {
 
 deleteUrl.addEventListener('click',() =>{
     imageUrlInput.value = '';
-    image.src = imageUrlInput.value;
+    image.src = imageUrlInput;
     clean();
 });
 
 imageUrlInput.addEventListener('input', () => {
+    image.src = imageUrlInput.value;
     if (imageUrlInput.value == '') {
         clean();
     }
-    image.src = imageUrlInput.value;
-
 });
 
-function clean() {
-    line.style.left = 0 + 'px';
-    line.style.top = 0 + 'px';
-    line.style.width = 0 + 'px';
-    line.style.height = 0 + 'px';
+function clean(){
+    line.style.left = 0 + "px";
+    line.style.top = 0 + "px";
+    line.style.width = 0 + "px";
+    line.style.height = 0 + "px";
 }
 
 function getAnality(img) {
@@ -61,12 +61,23 @@ function getAnality(img) {
             console.log(result);
             analysis.forEach(face => {
                 console.log(`Face location: ${JSON.stringify(face.faceRectangle)}\n`);
-                line.style.left = face.faceRectangle.left + 'px';
-                line.style.top = face.faceRectangle.top + 'px';
-                line.style.width = face.faceRectangle.width + 'px';
-                line.style.height = face.faceRectangle.height + 'px';
+                line.style.left = `${(face.faceRectangle.left / image.naturalWidth) * 50}%`;
+                line.style.top = `${(face.faceRectangle.top / image.naturalHeight) * 100}%`;
+                line.style.width = `${(face.faceRectangle.width / image.naturalWidth) * 50}%`;
+                line.style.height = `${(face.faceRectangle.height / image.naturalHeight) * 100}%`;
             });
         })
         .catch(error => console.error('Error:', error));
+}
 
+const getUser = async () => {
+    try {
+        const data = await fetch("https://jsonplaceholder.typicode.com/users")
+        const resultado = await data.json();
+        resultado.forEach(element => {
+            console.log(element.name);
+        });
+    } catch (error) {
+        console.error(error);
+    }
 }

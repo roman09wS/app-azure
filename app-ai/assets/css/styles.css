@@ -14,6 +14,20 @@
 }
 
 
+#line {
+    border: 2px solid red;
+}
+
+#image-container {
+    max-width: 50%;
+    overflow: hidden;
+}
+
+#image {
+    width: 100%;
+    height: auto;
+}
+
 /*** Spinner ***/
 #spinner {
     opacity: 0;

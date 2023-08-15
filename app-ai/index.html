@@ -22,8 +22,6 @@
 </head>
 
 <body>
-
-
   <div id="js-preloader" class="js-preloader">
     <div class="preloader-inner">
       <span class="dot"></span>
@@ -113,14 +111,16 @@
                       <input type="text" class="mt-5 py-sm-1 px-1 px-sm-3 me-2" id="imageUrl"
                         placeholder="Enter image URL">
                       <i class="fa-regular fa-x fa-beat-fade ms-2" id="deleteUrl" type="button" style="color: white;"></i>
-                      <button type="button" class="btn btn-outline-light ms-2" id="drawButton">Start<span></span></button>
+                      <button type="button" class="btn btn-outline-light ms-2" id="drawButton">Start</button>
                       <input type="number" id="left" hidden>
                       <input type="number" id="top" hidden>
                       <input type="number" id="width" hidden>
                       <input type="number" id="height" hidden>
-                      <div id="prueba" style="position: relative;">
-                        <img id="image" src="" alt="" class="img-fluid mt-3" style="max-width: 100%;">
-                        <div id="line" style="position: absolute; border: 2px solid red;"></div>
+                      <div class="position-relative mt-3">
+                        <div id="image-container">
+                            <img id="image" src="" alt="" class="">
+                        </div>
+                        <div id="line" class="position-absolute"></div>
                       </div>
                     </div>
                   </div>
@@ -228,8 +228,6 @@
       </div>
     </div>
   </footer>
-
-
   <!-- Scripts -->
   <!-- Bootstrap core JavaScript -->
   <script src="vendor/jquery/jquery.min.js"></script>
@@ -240,8 +238,6 @@
   <script src="assets/js/tabs.js"></script>
   <script src="assets/js/popup.js"></script>
   <script src="assets/js/custom.js"></script>
-
-
 </body>
 
 </html>
