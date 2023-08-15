@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -9,7 +10,8 @@
   <!-- Bootstrap core CSS -->
   <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
   <link rel="icon" href="assets/images/icon.png" type="image/x-icon">
-
+  <!--Iconos-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <!-- Additional CSS Files -->
   <link rel="stylesheet" href="/assets/css/styles.css">
   <link rel="stylesheet" href="assets/css/fontawesome.css">
@@ -18,9 +20,10 @@
   <link rel="stylesheet" href="assets/css/animate.css">
   <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css" />
 </head>
+
 <body>
 
-  
+
   <div id="js-preloader" class="js-preloader">
     <div class="preloader-inner">
       <span class="dot"></span>
@@ -37,7 +40,7 @@
       <div class="row">
         <div class="col-12">
           <nav class="main-nav">
-            
+
             <a href="index.html" class="logo">
               <img src="assets/images/logo.png" alt="">
             </a>
@@ -58,7 +61,7 @@
             <a class='menu-trigger'>
               <span>Menu</span>
             </a>
-            
+
           </nav>
         </div>
       </div>
@@ -79,7 +82,7 @@
                   <h4><em>Descubre</em> todo su potencial por Winder y Jefry</h4>
                   <div class="main-button">
                     <a href="browse.html">Browse Now</a>
-                    <button type="button" id="identifyButton" class="btn-play">
+                    <button type="button" class="btn-play" hidden>
                       <span></span>
                     </button>
                   </div>
@@ -102,30 +105,31 @@
                       <div class="row">
                         <div class="col-lg-6 col-sm-6">
                           <h2>Entre mas cerca el rostro, serán mejores los resultados</h2>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-12">
+                      <label for="imageUrl" class="text-white">Image URL:</label>
+                      <input type="text" class="mt-5 py-sm-1 px-1 px-sm-3 me-2" id="imageUrl"
+                        placeholder="Enter image URL">
+                      <i class="fa-regular fa-x fa-beat-fade ms-2" id="deleteUrl" type="button" style="color: white;"></i>
+                      <button type="button" class="btn btn-outline-light ms-2" id="drawButton">Start<span></span></button>
+                      <input type="number" id="left" hidden>
+                      <input type="number" id="top" hidden>
+                      <input type="number" id="width" hidden>
+                      <input type="number" id="height" hidden>
+                      <div id="prueba" style="position: relative;">
+                        <img id="image" src="" alt="" class="img-fluid mt-3" style="max-width: 100%;">
+                        <div id="line" style="position: absolute; border: 2px solid red;"></div>
                       </div>
                     </div>
                   </div>
-                    <div class="col-lg-12">
-                        <label for="imageUrl" class="text-white">Image URL:</label>
-                        <input type="text" class="mt-5 py-sm-1 px-1 px-sm-5 me-2" id="imageUrl" placeholder="Enter image URL">
-                        <input type="number" id="left" hidden>
-                        <input type="number" id="top" hidden>
-                        <input type="number" id="width" hidden>
-                        <input type="number" id="height" hidden>
-                        <button id="drawButton" class="btn btn-outline-danger">Start</button>
-                        <br>
-                        <div id="prueba" style="position: relative;">
-                            <img id="image" src="" alt="" class="img-fluid" style="max-width: 100%;">
-                            <div id="line" style="position: absolute; border: 2px solid red;"></div>
-                        </div>
-                    </div>
-                </div>
 
-                  <div class="col-lg-12">
+                  <!-- <div class="col-lg-12">
                     <div class="main-button">
                       <a href="browse.html">Discover Popular</a>
                     </div>
-                  </div>
+                  </div> -->
                 </div>
               </div>
             </div>
