@@ -1,3 +1,4 @@
+// Logica para el detector de caras
 const drawButton = document.getElementById('drawButton');
 const image = document.getElementById('image');
 const line = document.getElementById('line');
@@ -14,7 +15,7 @@ drawButton.addEventListener('click', () => {
     const width = parseInt(widthInput.value);
     const height = parseInt(heightInput.value);
     let img = imageUrlInput.value;
-    getAnality(img);
+    getDeteccion(img);
 });
 
 deleteUrl.addEventListener('click',() =>{
@@ -37,7 +38,7 @@ function clean(){
     line.style.height = 0 + "px";
 }
 
-function getAnality(img) {
+function getDeteccion(img) {
     const key = "c6a14306daad4cd2a91b18d3dafb0149";
     const endpoint = "https://face-recognitionv1.cognitiveservices.azure.com/";
 
@@ -82,7 +83,7 @@ function getAnality(img) {
 //     }
 // }
 
-
+// Logica para el traductor
 const text = document.getElementById('input');
 const resultado = document.getElementById('result');
 
@@ -126,6 +127,102 @@ function traslator(texto) {
         resultado.innerHTML = result[0].translations[1].text
     })
     .catch( err => console.log(err));
+}
 
+
+
+
+//logica para el analisis de imagenes
+const etqImg = document.getElementById('imageAnalisis');
+const imgUrlAnalisis = document.getElementById('imageUrlAnalisis');
+const deleteUrlAnalisis = document.getElementById('deleteUrlAnalisis');
+const botonAnalisis = document.getElementById('botonAnalisis');
+const description = document.getElementById('description');
+const objects = document.getElementById('objects');
+const ul = document.getElementById('listaObjects');
+
+imgUrlAnalisis.addEventListener('input', () => {
+    etqImg.src = imgUrlAnalisis.value; 
+});
+
+deleteUrlAnalisis.addEventListener('click',() => {
+    imgUrlAnalisis.value = '';
+    etqImg.src = imgUrlAnalisis;
+    description.innerHTML = 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit esse minus voluptatem?';
+    while (ul.firstChild) {
+        ul.removeChild(ul.firstChild);
+    }
+});
+
+botonAnalisis.addEventListener('click',() => {
+    let img = imgUrlAnalisis.value;
+    getAnalisis(img);
+});
+
+
+
+async function traslatorEnlish(texto) {
+    const key = '45256b4902f24462948fda7582f21d05';
+    const location = 'eastus';
+    const endpoint = 'https://api.cognitive.microsofttranslator.com/';
+    const headers = {
+        "Ocp-Apim-Subscription-Key" : key,
+        "Ocp-Apim-Subscription-Region" : location,
+        "Content-Type" : "application/json"
+    };
+    const body = JSON.stringify([{
+        'text' : texto
+    }]);
+
+    try {
+        const response = await fetch(`${endpoint}translate?api-version=3.0&from=en&to=fr&to=es&to=zh-Hans`, {
+            method: 'POST',
+            headers: headers,
+            body: body
+        });
+        
+        const result = await response.json();
+        const respuesta = result[0].translations[1].text;
+        return respuesta;
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+function getAnalisis(img) {
+    const key = '45256b4902f24462948fda7582f21d05';
+    const endpoint = 'https://service.cognitiveservices.azure.com/';
+    const headers = {
+        "Ocp-Apim-Subscription-Key": key,
+        "Content-Type": "application/json"
+    };
+    const body = JSON.stringify({ url: img });
+    fetch(`${endpoint}vision/v3.2/analyze?visualFeatures=Categories,Description,Objects`,{
+        method : 'POST',
+        headers : headers,
+        body : body
+    })
+    .then(resultado => resultado.json())
+    .then( response => {        
+        (async () => {
+            let textoDescription = response.description.captions[0].text;
+            const descripcionTraslator = await traslatorEnlish(textoDescription);
+            description.innerHTML = descripcionTraslator;
+            
+            let items = response.description.tags;
+            items.forEach(async element => {
+                const li = document.createElement("li");
+                
+                // Traducir el texto del elemento antes de asignarlo al <li>
+                const translatedText = await traslatorEnlish(element);
+                li.textContent = translatedText;
+                
+                li.classList.add("list-group-item");
+                ul.appendChild(li);
+            });
+            // console.log(response);
+        })();
+    })
+    .catch( err => console.error(err));  
 }
 

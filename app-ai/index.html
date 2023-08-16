@@ -101,7 +101,7 @@
                   <div class="col-lg-12">
                     <div class="item">
                       <div class="row">
-                        <div class="col-lg-6 col-sm-6">
+                        <div class="col-lg-12 col-sm-6">
                           <h2>Entre mas cerca el rostro, serán mejores los resultados</h2>
                         </div>
                       </div>
@@ -154,32 +154,71 @@
                     </div>
                     <div class="col-lg-12">
                       <div class="row">
-                        <div class="col-lg-6">
+                        <div class="col-lg-6 col-sm-4">
                             <textarea id="input" class="form-control" rows="3"></textarea>
                         </div>
-
-                        <div class="col-lg-6">
+                        <div class="col-lg-6 col-sm-4">
                             <textarea id="result" class="form-control" placeholder="Traduccion" rows="3"></textarea>
                         </div>
-
                       </div>
-
                     </div>
                   </div>
-
-                  <!-- <div class="col-lg-12">
-                    <div class="main-button">
-                      <a href="browse.html">Discover Popular</a>
-                    </div>
-                  </div> -->
                 </div>
               </div>
             </div>
           </div>
           <!-- ***** Traductor End ***** -->
 
+          <!-- ***** Analisis Start ***** -->
+          <div class="most-popular">
+            <div class="row">
+              <div class="col-lg-12">
+                <div class="heading-section">
+                  <h4><em>Analisis</em> de Imagen</h4>
+                </div>
+                <div class="row">
+                  <div class="col-lg-12">
+                    <div class="item">
+                      <div class="row">
+                        <div class="col-lg-12 col-sm-6">
+                          <h3>Tiene la capacidad de describir una imagen e interpretar los objetos de la imagen</h3>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-12">
+                      <div class="row">
+                        <div class="col-lg-6">
+                          <label for="imageUrl" class="text-white">Image URL:</label>
+                          <input type="text" class="mt-5 py-sm-1 px-1 px-sm-3 me-2" id="imageUrlAnalisis"
+                            placeholder="Enter image URL">
+                          <i class="fa-regular fa-x fa-beat-fade ms-2" id="deleteUrlAnalisis" type="button" style="color: white;"></i>
+                          <button type="button" class="btn btn-outline-light ms-2" id="botonAnalisis">Start</button>
+                          <div class="position-relative mt-3">
+                            <div id="image-container">
+                                <img id="imageAnalisis" src="" alt="" class="">
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="col-lg-6">
+                          <h4 class="mb-3">Descripcion: </h4>
+                          <p id="description" class="text-white">Lorem ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit esse minus voluptatem?</p>
+                          <h4 class="mt-3">Objetos detectados: </h4>
+                          <ul id="listaObjects" class="list-group list-group-flush col-4">
+                            
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- ***** Analisis End ***** -->
+
           <!-- ***** Gaming Library Start ***** -->
-          <div class="gaming-library">
+          <div class="gaming-library" hidden>
             <div class="col-lg-12">
               <div class="heading-section">
                 <h4><em>Your Gaming</em> Library</h4>
