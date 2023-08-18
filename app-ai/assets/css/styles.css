@@ -42,6 +42,13 @@
     opacity: 1;
 }
 
+/*** boton acompañante ***/
+.scroll-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 9999;
+}
 
 /*** Button ***/
 .btn {
@@ -135,6 +142,7 @@
     display: block;
     position: relative;
     z-index: 3;
+    top: 2px;
     width: 0;
     height: 0;
     left: -1px;

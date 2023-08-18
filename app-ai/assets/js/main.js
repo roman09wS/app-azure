@@ -8,6 +8,7 @@ const widthInput = document.getElementById('width');
 const heightInput = document.getElementById('height');
 const imageUrlInput = document.getElementById('imageUrl');
 const deleteUrl = document.getElementById('deleteUrl');
+const container_marcas = document.getElementById('marcar_caras');
 
 drawButton.addEventListener('click', () => {
     const left = parseInt(leftInput.value);
@@ -21,21 +22,20 @@ drawButton.addEventListener('click', () => {
 deleteUrl.addEventListener('click',() =>{
     imageUrlInput.value = '';
     image.src = imageUrlInput;
-    clean();
+    deleteMarcas(container_marcas);
 });
 
 imageUrlInput.addEventListener('input', () => {
     image.src = imageUrlInput.value;
     if (imageUrlInput.value == '') {
-        clean();
+        deleteMarcas(container_marcas);
     }
 });
 
-function clean(){
-    line.style.left = 0 + "px";
-    line.style.top = 0 + "px";
-    line.style.width = 0 + "px";
-    line.style.height = 0 + "px";
+function deleteMarcas(element) {
+    while (element.firstChild) {
+        element.removeChild(element.firstChild);
+    }
 }
 
 function getDeteccion(img) {
@@ -62,26 +62,19 @@ function getDeteccion(img) {
             console.log(result);
             analysis.forEach(face => {
                 console.log(`Face location: ${JSON.stringify(face.faceRectangle)}\n`);
-                line.style.left = `${(face.faceRectangle.left / image.naturalWidth) * 50}%`;
-                line.style.top = `${(face.faceRectangle.top / image.naturalHeight) * 100}%`;
-                line.style.width = `${(face.faceRectangle.width / image.naturalWidth) * 50}%`;
-                line.style.height = `${(face.faceRectangle.height / image.naturalHeight) * 100}%`;
+                let newDiv = document.createElement('div');
+                newDiv.classList.add('position-absolute');
+                newDiv.style.left = `${(face.faceRectangle.left / image.naturalWidth) * 50}%`;
+                newDiv.style.top = `${(face.faceRectangle.top / image.naturalHeight) * 100}%`;
+                newDiv.style.width = `${(face.faceRectangle.width / image.naturalWidth) * 50}%`;
+                newDiv.style.height = `${(face.faceRectangle.height / image.naturalHeight) * 100}%`;
+                newDiv.style.border = "2px solid red";
+                container_marcas.appendChild(newDiv);
             });
         })
         .catch(error => console.error('Error:', error));
 }
 
-// const getUser = async () => {
-//     try {
-//         const data = await fetch("https://jsonplaceholder.typicode.com/users")
-//         const resultado = await data.json();
-//         resultado.forEach(element => {
-//             console.log(element.name);
-//         });
-//     } catch (error) {
-//         console.error(error);
-//     }
-// }
 
 // Logica para el traductor
 const text = document.getElementById('input');
@@ -148,7 +141,7 @@ imgUrlAnalisis.addEventListener('input', () => {
 deleteUrlAnalisis.addEventListener('click',() => {
     imgUrlAnalisis.value = '';
     etqImg.src = imgUrlAnalisis;
-    description.innerHTML = 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit esse minus voluptatem?';
+    description.innerHTML = 'Descripcion de la imagen . . . .';
     while (ul.firstChild) {
         ul.removeChild(ul.firstChild);
     }
@@ -205,6 +198,7 @@ function getAnalisis(img) {
     .then(resultado => resultado.json())
     .then( response => {        
         (async () => {
+            console.log(response);
             let textoDescription = response.description.captions[0].text;
             const descripcionTraslator = await traslatorEnlish(textoDescription);
             description.innerHTML = descripcionTraslator;
@@ -226,3 +220,70 @@ function getAnalisis(img) {
     .catch( err => console.error(err));  
 }
 
+//logica para el chat bot
+
+const chatBox = document.getElementById('chat-box');
+const messageInput = document.getElementById('message-input');
+const sendButton = document.getElementById('send-button');
+sendButton.addEventListener('click', sendMessage);
+function sendMessage() {
+    const userMessage = messageInput.value;
+    if (userMessage.trim() !== '') {
+        displayMessage('Tú: ' + userMessage, 'user');
+        getBotResponse(userMessage);
+        messageInput.value = '';
+    }
+}
+
+function displayMessage(message, sender) {
+    const messageElement = document.createElement('div');
+    messageElement.className = sender === 'user' ? 'alert alert-primary mb-2' : 'alert alert-warning mb-2';
+    messageElement.textContent = message;
+    chatBox.appendChild(messageElement);
+    chatBox.scrollTop = chatBox.scrollHeight;
+}
+
+async function getBotResponse(userMessage) {
+    console.log(userMessage);
+    data = {
+        "top":1,
+        "question": " "+userMessage+" ",
+        "includeUnstructuredSources": true,
+        "confidenceScoreThreshold": 0,
+        "answerSpanRequest": {
+            "enable": true,
+            "topAnswersWithSpan": 0,
+            "confidenceScoreThreshold": 1
+        },
+        "filters": {
+            "metadataFilter":{
+                "logicalOperation": "AND"
+            }
+        }
+    }
+
+    url = "https://chat-bot-v1.cognitiveservices.azure.com/language/:query-knowledgebases?projectName=chat-bot-v1&api-version=2021-10-01&deploymentName=production"
+    fetch(url,{
+        method: 'POST',
+        headers: {
+            "Ocp-Apim-Subscription-Key": "4ef77b5607554d15ab48f373dd444b6f",
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+        
+    })
+    .then(response => response.json())
+    .then(data =>{
+        console.log(data.answers[0].answer);
+        const botResponse = data.answers[0].answer;
+        displayMessage('Bot: ' + botResponse, 'bot');
+
+    })
+    .catch(error => {
+        console.error("Error:", error);
+    });
+}
+
+
+
+    

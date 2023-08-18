@@ -8,6 +8,7 @@
     rel="stylesheet">
   <title>App azure</title>
   <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
   <link rel="icon" href="assets/images/icon.png" type="image/x-icon">
   <!--Iconos-->
@@ -38,7 +39,6 @@
       <div class="row">
         <div class="col-12">
           <nav class="main-nav">
-
             <a href="index.html" class="logo">
               <img src="assets/images/logo.png" alt="">
             </a>
@@ -70,26 +70,38 @@
     <div class="row">
       <div class="col-lg-12">
         <div class="page-content">
-
           <!-- ***** Banner Start ***** -->
           <div class="main-banner">
             <div class="row">
               <div class="col-lg-7">
                 <div class="header-text">
-                  <h6>Bienvenido a la inteligencia artificial de AZURE</h6>
-                  <h4><em>Descubre</em> todo su potencial por Winder y Jefry</h4>
+                  <h2>Bienvenido a la <em>inteligencia artificial</em> de Azure</h2>
+                  <h4><em>Descubre</em> todo su potencial por Winder</h4>
+                  <a href="#imageAnalisis" class="btn-play" hidden><span></span></a>
+                </div>
+                <div class="col-lg-12">
                   <div class="main-button">
-                    <a href="browse.html">Browse Now</a>
-                    <button type="button" class="btn-play" hidden>
-                      <span></span>
-                    </button>
+                    <a href="" data-bs-toggle="collapse" data-bs-target="#collapseWidthExample" aria-expanded="false" aria-controls="collapseWidthExample">Profesores</a>
+                  </div>
+                  <div style="min-height: 125px;">
+                    <div class="collapse collapse-horizontal" id="collapseWidthExample">
+                      <div class="card card-body" style="width: 200px;">
+                        <p class="text-center">Diego Legarda</p>
+                        <p class="text-center">Oscar Loaiza</p>
+                        <p class="text-center">Felipe Londoño</p>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
           <!-- ***** Banner End ***** -->
-
+          <div class="scroll-button">
+            <button class="btn btn-light btn-floating rounded-circle float-end" data-bs-toggle="modal" data-bs-target="#exampleModal">
+              <i class="fa-solid fa-beat-fade fa-comment-dots" style="color: #f04265;"></i>
+            </button>  
+          </div>
           <!-- ***** Deteccion Start ***** -->
           <div class="most-popular">
             <div class="row">
@@ -101,35 +113,35 @@
                   <div class="col-lg-12">
                     <div class="item">
                       <div class="row">
-                        <div class="col-lg-12 col-sm-6">
+                        <div class="col-lg-6 col-sm-6">
                           <h2>Entre mas cerca el rostro, serán mejores los resultados</h2>
+                        </div>
+                        <div class="col-lg-1 col-sm-4">
+                          <div class="thumb">
+                            <img src="assets/images/stream-05.jpg" class="img-fluid" alt="">
+                          </div>
                         </div>
                       </div>
                     </div>
                     <div class="col-lg-12">
                       <label for="imageUrl" class="text-white">Image URL:</label>
-                      <input type="text" class="mt-5 py-sm-1 px-1 px-sm-3 me-2" id="imageUrl"
-                        placeholder="Enter image URL">
+                      <input type="text" class="mt-5 py-sm-1 px-1 px-sm-3 me-2" id="imageUrl" placeholder="Enter image URL">
                       <i class="fa-regular fa-x fa-beat-fade ms-2" id="deleteUrl" type="button" style="color: white;"></i>
-                      <button type="button" class="btn btn-outline-light ms-2" id="drawButton">Start</button>
                       <input type="number" id="left" hidden>
                       <input type="number" id="top" hidden>
                       <input type="number" id="width" hidden>
                       <input type="number" id="height" hidden>
+                      <button type="button" class="btn btn-outline-light ms-2" id="drawButton">Start</button>
                       <div class="position-relative mt-3">
                         <div id="image-container">
                             <img id="image" src="" alt="" class="">
+                            <div id="marcar_caras">
+
+                            </div>
                         </div>
-                        <div id="line" class="position-absolute"></div>
                       </div>
                     </div>
                   </div>
-
-                  <!-- <div class="col-lg-12">
-                    <div class="main-button">
-                      <a href="browse.html">Discover Popular</a>
-                    </div>
-                  </div> -->
                 </div>
               </div>
             </div>
@@ -149,6 +161,11 @@
                       <div class="row">
                         <div class="col-lg-6 col-sm-6">
                           <h3>El mejor traductor del mundo</h3>
+                        </div>
+                        <div class="col-lg-1 col-sm-4">
+                          <div class="thumb">
+                            <img src="assets/images/popular-07.jpg" class="img-fluid" alt="">
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -180,8 +197,13 @@
                   <div class="col-lg-12">
                     <div class="item">
                       <div class="row">
-                        <div class="col-lg-12 col-sm-6">
+                        <div class="col-lg-6 col-sm-6">
                           <h3>Tiene la capacidad de describir una imagen e interpretar los objetos de la imagen</h3>
+                        </div>
+                        <div class="col-lg-1 col-sm-4">
+                          <div class="thumb">
+                            <img src="assets/images/stream-07.jpg" class="img-fluid" alt="">
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -202,7 +224,7 @@
 
                         <div class="col-lg-6">
                           <h4 class="mb-3">Descripcion: </h4>
-                          <p id="description" class="text-white">Lorem ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit esse minus voluptatem?</p>
+                          <p id="description" class="text-white">Descripcion de la imagen . . . .</p>
                           <h4 class="mt-3">Objetos detectados: </h4>
                           <ul id="listaObjects" class="list-group list-group-flush col-4">
                             
@@ -216,6 +238,10 @@
             </div>
           </div>
           <!-- ***** Analisis End ***** -->
+          
+          
+          
+          
 
           <!-- ***** Gaming Library Start ***** -->
           <div class="gaming-library" hidden>
@@ -301,16 +327,44 @@
       <div class="row">
         <div class="col-lg-12">
           <p>Copyright © 2036 <a href="#">Cyborg Gaming</a> Company. All rights reserved.
-
-            <br>Design: <a href="https://templatemo.com" target="_blank" title="free CSS templates">WINDER</a>
-            Distributed By <a href="https://themewagon.com" target="_blank">JEFRY</a>
+            <br>Design: WINDER
+            Distributed By Microsoft
           </p>
         </div>
       </div>
     </div>
   </footer>
+
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5 text-dark" id="exampleModalLabel">Preguntas y Respuestas frecuentes</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="container mt-5" style="max-width: 400px;">
+                    <h3 class="mb-2 text-dark">Charlito  <i class="fa-solid fa-robot"></i></h3>
+                    <h6 class="text-dark mb-4">Preguntas sobre inteligencia artificial con los recursos de azure.</h6>    
+                    <div class="card mb-4">
+                        <div class="card-body" id="chat-box" style="height: 300px; overflow-y: scroll;"></div>
+                    </div>
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" id="message-input" placeholder="Escribe un mensaje...">
+                        <button class="btn btn-primary" id="send-button">Enviar</button>
+                        <button class="btn btn-primary ms-1" id="startButton"><i class="bi bi-mic-fill"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
   <!-- Scripts -->
+
   <!-- Bootstrap core JavaScript -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   <script src="vendor/jquery/jquery.min.js"></script>
   <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
   <script src="/assets/js/main.js"></script>
