@@ -125,13 +125,13 @@
                     </div>
                     <div class="col-lg-12">
                       <label for="imageUrl" class="text-white">Image URL:</label>
-                      <input type="text" class="mt-5 py-sm-1 px-1 px-sm-3 me-2" id="imageUrl" placeholder="Enter image URL">
+                      <input type="text" class="mt-5 w-40 p-3 py-sm-1 px-1 px-sm-3 me-2" id="imageUrl" placeholder="Ingrese la URL de la imagen">
                       <i class="fa-regular fa-x fa-beat-fade ms-2" id="deleteUrl" type="button" style="color: white;"></i>
                       <input type="number" id="left" hidden>
                       <input type="number" id="top" hidden>
                       <input type="number" id="width" hidden>
                       <input type="number" id="height" hidden>
-                      <button type="button" class="btn btn-outline-light ms-2" id="drawButton">Start</button>
+                      <button type="button" class="btn btn-outline-light ms-3" id="drawButton">Start</button>
                       <div class="position-relative mt-3">
                         <div id="image-container">
                             <img id="image" src="" alt="" class="">
@@ -171,11 +171,22 @@
                     </div>
                     <div class="col-lg-12">
                       <div class="row">
+                        <div class="col-12 mb-3">
+                          <form action="">
+                            <button type="button" class="btn btn-transparent position-absolute top-50 start-50 translate-middle" id="cambioIdioma">
+                              <i class="fa-solid fa-rotate fa-beat-fade" style="color: #f04265;"></i>
+                            </button>
+                          </form>
+                        </div>
+                      </div>
+                      <div class="row">
                         <div class="col-lg-6 col-sm-4">
-                            <textarea id="input" class="form-control" rows="3"></textarea>
+                          <p class="text-white fw-semibold text-center fs-6 text-wrap" id="es">Español</p>
+                          <textarea id="texto_user" class="form-control" rows="3"></textarea>
                         </div>
                         <div class="col-lg-6 col-sm-4">
-                            <textarea id="result" class="form-control" placeholder="Traduccion" rows="3"></textarea>
+                          <p class="text-white fw-semibold text-center fs-6 text-wrap" id="en">Ingles</p>
+                          <textarea id="result" class="form-control" placeholder="Traduccion" rows="3"></textarea>
                         </div>
                       </div>
                     </div>
@@ -211,10 +222,10 @@
                       <div class="row">
                         <div class="col-lg-6">
                           <label for="imageUrl" class="text-white">Image URL:</label>
-                          <input type="text" class="mt-5 py-sm-1 px-1 px-sm-3 me-2" id="imageUrlAnalisis"
+                          <input type="text" class="mt-5 w-40 p-3 py-sm-1 px-1 px-sm-3 me-2" id="imageUrlAnalisis"
                             placeholder="Enter image URL">
                           <i class="fa-regular fa-x fa-beat-fade ms-2" id="deleteUrlAnalisis" type="button" style="color: white;"></i>
-                          <button type="button" class="btn btn-outline-light ms-2" id="botonAnalisis">Start</button>
+                          <button type="button" class="btn btn-outline-light ms-3" id="botonAnalisis">Start</button>
                           <div class="position-relative mt-3">
                             <div id="image-container">
                                 <img id="imageAnalisis" src="" alt="" class="">

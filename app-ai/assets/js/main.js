@@ -10,6 +10,7 @@ const imageUrlInput = document.getElementById('imageUrl');
 const deleteUrl = document.getElementById('deleteUrl');
 const container_marcas = document.getElementById('marcar_caras');
 
+//Cuando le de click al boton start
 drawButton.addEventListener('click', () => {
     const left = parseInt(leftInput.value);
     const top = parseInt(topInput.value);
@@ -18,26 +19,26 @@ drawButton.addEventListener('click', () => {
     let img = imageUrlInput.value;
     getDeteccion(img);
 });
-
+//Cuando le de click al boton X
 deleteUrl.addEventListener('click',() =>{
     imageUrlInput.value = '';
     image.src = imageUrlInput;
     deleteMarcas(container_marcas);
 });
-
+//Cuando ingrese la URL de la imagen cargue de una vez la imagen
 imageUrlInput.addEventListener('input', () => {
     image.src = imageUrlInput.value;
     if (imageUrlInput.value == '') {
         deleteMarcas(container_marcas);
     }
 });
-
+//Funcion para quitar las marcas de la caras detectadas
 function deleteMarcas(element) {
     while (element.firstChild) {
         element.removeChild(element.firstChild);
     }
 }
-
+//Funcion para consumir el API del recurso
 function getDeteccion(img) {
     const key = "c6a14306daad4cd2a91b18d3dafb0149";
     const endpoint = "https://face-recognitionv1.cognitiveservices.azure.com/";
@@ -77,52 +78,81 @@ function getDeteccion(img) {
 
 
 // Logica para el traductor
-const text = document.getElementById('input');
+const text = document.getElementById('texto_user');
 const resultado = document.getElementById('result');
+const cambioIdioma = document.getElementById('cambioIdioma');
+const etq_español = document.getElementById('es');
+const etq_ingles = document.getElementById('en');
+let count = 1;
+let es = 'es';
+let en = 'en';
 
 text.addEventListener('input',() =>{
     console.log("traduciendo.....");
     let texto = text.value;
     if (text.value == '') {
         console.log("ingresa lo que deseas traducir");
-        resultado.innerHTML = '';
+        resultado.textContent = '';
     }else{
-        traslator(texto);
+        if (count % 2 == 0) {
+            ( async () => {
+                const traduccion = await traslator(en,es,texto);
+                resultado.textContent = traduccion;
+            })();
+        }else{
+            ( async () => {
+                const traduccion = await traslator(es,en,texto);
+                resultado.textContent = traduccion;
+            })();
+        }
     }
 })
 
+cambioIdioma.addEventListener('click',() => {
+    count += 1;
+    let contentEnglis = resultado.value;
+    let contentSpanish = text.value;
+    if (count % 2 == 0) {
+        etq_español.textContent = "Ingles";
+        etq_ingles.textContent = "Español";
+        resultado.textContent = contentSpanish;
+        text.value = contentEnglis;
+    }else{
+        etq_español.textContent = "Español";
+        etq_ingles.textContent = "Ingles";
+        resultado.textContent = contentSpanish;
+        text.value = contentEnglis;
+    }
+    console.log("cambio de idioma");
+})
 
-function traslator(texto) {
+async function traslator(from,to,texto) {
     const key = '45256b4902f24462948fda7582f21d05';
     const location = 'eastus';
     const endpoint = 'https://api.cognitive.microsofttranslator.com/';
-
-    const text = texto;
-
     const headers = {
         "Ocp-Apim-Subscription-Key" : key,
         "Ocp-Apim-Subscription-Region" : location,
         "Content-Type" : "application/json"
     };
-
     const body = JSON.stringify([{
-        'text' : text
+        'text' : texto
     }]);
 
-    fetch(`${endpoint}translate?api-version=3.0&from=es&to=fr&to=en&to=zh-Hans`,{
-        method : 'POST',
-        headers : headers,
-        body : body
-    })
-    .then( response => response.json())
-    .then( result => {
-        console.log(result[0].translations[1].text);
-        resultado.innerHTML = result[0].translations[1].text
-    })
-    .catch( err => console.log(err));
+    try {
+        const response = await fetch(`${endpoint}translate?api-version=3.0&from=${from}&to=fr&to=${to}&to=zh-Hans`, {
+            method: 'POST',
+            headers: headers,
+            body: body
+        });
+        
+        const result = await response.json();
+        const respuesta = result[0].translations[1].text;
+        return respuesta;
+    } catch (error) {
+        console.log(error);
+    }
 }
-
-
 
 
 //logica para el analisis de imagenes
@@ -141,7 +171,7 @@ imgUrlAnalisis.addEventListener('input', () => {
 deleteUrlAnalisis.addEventListener('click',() => {
     imgUrlAnalisis.value = '';
     etqImg.src = imgUrlAnalisis;
-    description.innerHTML = 'Descripcion de la imagen . . . .';
+    description.textContent = 'Descripcion de la imagen . . . .';
     while (ul.firstChild) {
         ul.removeChild(ul.firstChild);
     }
@@ -152,35 +182,6 @@ botonAnalisis.addEventListener('click',() => {
     getAnalisis(img);
 });
 
-
-
-async function traslatorEnlish(texto) {
-    const key = '45256b4902f24462948fda7582f21d05';
-    const location = 'eastus';
-    const endpoint = 'https://api.cognitive.microsofttranslator.com/';
-    const headers = {
-        "Ocp-Apim-Subscription-Key" : key,
-        "Ocp-Apim-Subscription-Region" : location,
-        "Content-Type" : "application/json"
-    };
-    const body = JSON.stringify([{
-        'text' : texto
-    }]);
-
-    try {
-        const response = await fetch(`${endpoint}translate?api-version=3.0&from=en&to=fr&to=es&to=zh-Hans`, {
-            method: 'POST',
-            headers: headers,
-            body: body
-        });
-        
-        const result = await response.json();
-        const respuesta = result[0].translations[1].text;
-        return respuesta;
-    } catch (error) {
-        console.log(error);
-    }
-}
 
 function getAnalisis(img) {
     const key = '45256b4902f24462948fda7582f21d05';
@@ -200,28 +201,26 @@ function getAnalisis(img) {
         (async () => {
             console.log(response);
             let textoDescription = response.description.captions[0].text;
-            const descripcionTraslator = await traslatorEnlish(textoDescription);
-            description.innerHTML = descripcionTraslator;
+            const descripcionTraslator = await traslator(en,es,textoDescription);
+            description.textContent = descripcionTraslator;
             
             let items = response.description.tags;
             items.forEach(async element => {
                 const li = document.createElement("li");
                 
                 // Traducir el texto del elemento antes de asignarlo al <li>
-                const translatedText = await traslatorEnlish(element);
+                const translatedText = await traslator(en,es,element);
                 li.textContent = translatedText;
                 
                 li.classList.add("list-group-item");
                 ul.appendChild(li);
             });
-            // console.log(response);
         })();
     })
     .catch( err => console.error(err));  
 }
 
 //logica para el chat bot
-
 const chatBox = document.getElementById('chat-box');
 const messageInput = document.getElementById('message-input');
 const sendButton = document.getElementById('send-button');
@@ -283,7 +282,5 @@ async function getBotResponse(userMessage) {
         console.error("Error:", error);
     });
 }
-
-
 
     
