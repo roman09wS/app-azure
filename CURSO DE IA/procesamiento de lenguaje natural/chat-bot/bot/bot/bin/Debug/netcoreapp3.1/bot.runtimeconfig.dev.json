@@ -1,0 +1,8 @@
+{
+  "runtimeOptions": {
+    "additionalProbingPaths": [
+      "C:\\Users\\Winder Roman\\.dotnet\\store\\|arch|\\|tfm|",
+      "C:\\Users\\Winder Roman\\.nuget\\packages"
+    ]
+  }
+}

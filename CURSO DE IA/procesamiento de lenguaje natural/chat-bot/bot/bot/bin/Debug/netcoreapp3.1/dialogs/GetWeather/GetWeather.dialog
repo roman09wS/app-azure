@@ -1,0 +1,97 @@
+{
+  "$kind": "Microsoft.AdaptiveDialog",
+  "$designer": {
+    "id": "9H0dBK",
+    "name": "GetWeather",
+    "comment": "Obtener las condiciones meteorológicas actuales para el código postal proporcionado"
+  },
+  "autoEndDialog": true,
+  "defaultResultProperty": "dialog.result",
+  "triggers": [
+    {
+      "$kind": "Microsoft.OnBeginDialog",
+      "$designer": {
+        "name": "BeginDialog",
+        "description": "",
+        "id": "eF41Xh"
+      },
+      "actions": [
+        {
+          "$kind": "Microsoft.TextInput",
+          "$designer": {
+            "id": "Y6888a"
+          },
+          "disabled": false,
+          "maxTurnCount": 3,
+          "alwaysPrompt": false,
+          "allowInterruptions": true,
+          "prompt": "${TextInput_Prompt_Y6888a()}",
+          "unrecognizedPrompt": "",
+          "invalidPrompt": "",
+          "property": "dialog.city",
+          "outputFormat": "=trim(this.value)"
+        },
+        {
+          "$kind": "Microsoft.HttpRequest",
+          "$designer": {
+            "id": "8zhtyx"
+          },
+          "method": "GET",
+          "url": "http://api.openweathermap.org/data/2.5/weather?units=metric&q=${dialog.city}&appid=6b84ddb63749f3c7a09df354ca8e94f2",
+          "resultProperty": "dialog.api_response",
+          "headers": {},
+          "responseType": "json",
+          "contentType": "dialog.api_response.content"
+        },
+        {
+          "$kind": "Microsoft.IfCondition",
+          "$designer": {
+            "id": "4okPLT"
+          },
+          "condition": "=dialog.api_response.statusCode == 200",
+          "actions": [
+            {
+              "$kind": "Microsoft.SetProperties",
+              "$designer": {
+                "id": "rcFLJS"
+              },
+              "assignments": [
+                {
+                  "property": "dialog.weather",
+                  "value": "=dialog.api_response.content.weather[0].description"
+                },
+                {
+                  "property": "dialog.temp",
+                  "value": "=round(dialog.api_response.content.main.temp)"
+                },
+                {
+                  "property": "dialog.icon",
+                  "value": "=dialog.api_response.content.weather[0].icon"
+                }
+              ]
+            },
+            {
+              "$kind": "Microsoft.SendActivity",
+              "$designer": {
+                "id": "p2E6Wn"
+              },
+              "activity": "${SendActivity_p2E6Wn()}"
+            }
+          ],
+          "elseActions": [
+            {
+              "$kind": "Microsoft.SendActivity",
+              "$designer": {
+                "id": "uoXxNa"
+              },
+              "activity": "${SendActivity_uoXxNa()}"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "generator": "GetWeather.lg",
+  "recognizer": "GetWeather.lu.qna",
+  "id": "GetWeather"
+}

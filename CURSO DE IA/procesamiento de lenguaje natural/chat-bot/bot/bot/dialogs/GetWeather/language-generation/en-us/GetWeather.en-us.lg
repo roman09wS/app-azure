@@ -1,0 +1,25 @@
+[import](common.lg)
+
+# TextInput_Prompt_Y6888a()
+[Activity    
+    Text = Enter your city.
+    SuggestedActions = Cancelar
+]
+
+# TextInput_Prompt_Y6888a_text()
+- Ingrese su ciudad
+# SendActivity_p2E6Wn()
+[ThumbnailCard
+    title = El clima para ${dialog.city}
+    text = ${dialog.weather} (${dialog.temp}&deg;)
+    image = http://openweathermap.org/img/w/${dialog.icon}.png
+]
+# SendActivity_p2E6Wn_text()
+- El clima en ${dialog.city} es ${dialog.weather} y la temperatura es  ${dialog.temp}&deg;.
+# SendActivity_uoXxNa()
+[Activity
+    Text = ${SendActivity_uoXxNa_text()}
+]
+
+# SendActivity_uoXxNa_text()
+- Ha ocurrido un error ${dialog.api_response.content.message}.

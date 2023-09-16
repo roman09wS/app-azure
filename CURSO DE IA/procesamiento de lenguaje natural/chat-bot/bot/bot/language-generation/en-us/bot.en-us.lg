@@ -1,0 +1,37 @@
+[import](common.lg)
+
+# SendActivity_Greeting()
+[Activity
+    Text = ${SendActivity_Greeting_text()}
+]
+
+# SendActivity_Greeting_text()
+- Hola soy Charlito
+# SendActivity_DidNotUnderstand()
+[Activity
+    Text = ${SendActivity_DidNotUnderstand_text()}
+]
+
+# SendActivity_DidNotUnderstand_text()
+- Sorry, I didn't get that.
+# TextInput_Prompt_HyLkjB()
+[Activity
+    Text = ${TextInput_Prompt_HyLkjB_text()}
+]
+
+# TextInput_Prompt_HyLkjB_text()
+- Cual es tu nombre?
+# SendActivity_yXiSpc()
+[Activity
+    Text = ${SendActivity_yXiSpc_text()}
+]
+
+# SendActivity_yXiSpc_text()
+- Hola ${user.name}, mucho gusto
+# SendActivity_cScWKz()
+[Activity
+    Text = ${SendActivity_cScWKz_text()}
+]
+
+# SendActivity_cScWKz_text()
+- De acuerdo, cuando estes listo puedes preguntarme sobre el clima

@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+        integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"
+        integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <title>Transcribir de texto a voz</title>
+</head>
+
+<body>
+    <div class="container">
+        <input type="text" name="" id="subscriptionKey" value="45256b4902f24462948fda7582f21d05">
+        <input type="text" name="" id="serviceRegion" value="eastus">
+        <div class="row text-center">
+            <div class="col-12">
+                <button id="startButton" class="btn btn-outline-primary"><i
+                        class="fa-solid fa-microphone fa-fade"></i></button>
+            </div>
+            <div class="col-6">
+                <h3 id="resultText"></h3>
+
+            </div>
+
+            <div class="col-6">
+                <h2 id="traducido"></h2>
+
+            </div>
+            
+        </div>
+    </div>
+    <script src="https://aka.ms/csspeech/jsbrowserpackageraw"></script>
+    <script>
+        let startRecognizeOnceAsyncButton;
+        let subscriptionKey;
+        let serviceRegion;
+        let phraseDiv;
+        let responseH2;
+        document.addEventListener('DOMContentLoaded', function () {
+            startRecognizeOnceAsyncButton = document.getElementById("startButton");
+            subscriptionKey = document.getElementById("subscriptionKey");
+            serviceRegion = document.getElementById("serviceRegion");
+            phraseDiv = document.getElementById("resultText");
+            responseH2 = document.getElementById('traducido');
+            
+            startRecognizeOnceAsyncButton.addEventListener("click", function () {
+                startRecognizeOnceAsyncButton.disabled = true;
+                phraseDiv.textContent = "";
+
+                if (subscriptionKey.value === "" || subscriptionKey.value === "subscription") {
+                    alert("Please enter your Microsoft Cognitive Services Speech subscription key!");
+                    return;
+                }
+                var speechConfig = SpeechSDK.SpeechConfig.fromSubscription(subscriptionKey.value, serviceRegion.value);
+
+                speechConfig.speechRecognitionLanguage = "es-ES";
+                var audioConfig = SpeechSDK.AudioConfig.fromDefaultMicrophoneInput();
+                recognizer = new SpeechSDK.SpeechRecognizer(speechConfig, audioConfig);
+
+                recognizer.recognizeOnceAsync(
+                    function (result) {
+                        startRecognizeOnceAsyncButton.disabled = false;
+                        phraseDiv.textContent += result.text;
+                        //window.console.log(result.privText);
+                        let capturado = result.privText;
+                        traslator(capturado,"en");
+                        
+                        let nombre = "";
+                        let apellido = "";
+                        let rol = "";
+
+                        let entidad_nombre = false;
+                        let entidad_apellido = false;
+                        let entidad_rol = false;
+
+                        capturado = capturado.replace(/,/g, ''); // Reemplazar comas por vacio
+                        capturado = capturado.replace(/\./g, ''); //remplazar puntos por vacio
+                        var palabras = capturado.split(" "); 
+                        for (let i = 0; i < palabras.length; i++) {
+                            if (palabras[i] == 'crear' || palabras[i] == 'insertar') {
+                                console.log("se inserto en db");
+                            }
+    
+                            if (entidad_nombre) {
+                                nombre = palabras[i];
+                                entidad_nombre = false;
+                            }
+    
+                            if (entidad_apellido) {
+                                apellido = palabras[i];
+                                entidad_apellido = false;
+                            }
+    
+                            if (entidad_rol) {
+                                rol = palabras[i];
+                                entidad_rol = false;
+                            }
+    
+    
+    
+                            if (palabras[i] == 'nombre' || palabras[i] == 'nombres') {
+                                entidad_nombre = true;
+                            }
+    
+                            if (palabras[i] == 'apellido' || palabras[i] == 'apellidos') {
+                                entidad_apellido = true;
+                            }
+    
+                            if (palabras[i] == 'rol' || palabras[i] == 'roll' || palabras[i] == 'roy' ) {
+                                entidad_rol = true;
+                            }
+                        }
+    
+                        console.log("nombre " + nombre + " apellido " + apellido + " rol " + rol);
+
+                        enviarDatos(nombre, apellido, rol);
+                        recognizer.close();
+                        recognizer = undefined;
+                    },
+                    function (err) {
+                        startRecognizeOnceAsyncButton.disabled = false;
+                        phraseDiv.textContent += err;
+                        window.console.log(err);
+
+                        recognizer.close();
+                        recognizer = undefined;
+                    });
+            });
+
+            if (!!window.SpeechSDK) {
+                SpeechSDK = window.SpeechSDK;
+                startRecognizeOnceAsyncButton.disabled = false;
+            }
+
+            function enviarDatos(nombre, apellido, rol) {
+
+                let form = document.createElement('form');
+                //form.method('POST')
+
+                // Crear un input para "Nombre"
+                const inputNombre = document.createElement("input");
+                inputNombre.type = "text";
+                inputNombre.name = "nombre";
+                inputNombre.value = nombre;
+                form.appendChild(inputNombre);
+
+                // Crear un input para "Apellido"
+                const inputApellido = document.createElement("input");
+                inputApellido.type = "text";
+                inputApellido.name = "apellido";
+                inputApellido.value = apellido;
+                form.appendChild(inputApellido);
+
+                // Crear un input para "Rol"
+                const inputRol = document.createElement("input");
+                inputRol.type = "text";
+                inputRol.name = "rol";
+                inputRol.value = rol;
+                form.appendChild(inputRol);
+
+                const url = "http://localhost/API-PHP/usuarios/create_user.php";
+                let headers = {
+                    "Accept": "application/json"
+                }
+
+                let datos = new FormData(form);
+
+                const configuracion = {
+                    method: 'POST',
+                    headers: headers,
+                    body: datos
+                }
+
+                //console.log(JSON.stringify(data));
+
+
+                fetch(url, configuracion)
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.status) {
+                            swal('Creado con exito', 'Se ha registrado con exito', 'success');
+                        } else {
+                            swal('Error', 'Error al registrar verifique de nuevo!!', 'error');
+                        }
+                        console.log(data);
+                    });
+            }
+
+
+            async function traslator(texto, idioma) {
+                const headers = {
+                    "Ocp-Apim-Subscription-Key": "68ecc8fdd30345b1a63e6e9304d3a31f",
+                    "Ocp-Apim-Subscription-Region": "eastus",
+                    "Content-Type": "application/json"
+                }
+
+                const endpoint = "https://api.cognitive.microsofttranslator.com/";
+
+                const body = JSON.stringify([{ 'text': texto }]);
+
+                fetch(`${endpoint}translate?api-version=3.0&from=es&to=${idioma}`, {
+                    method: "POST",
+                    headers: headers,
+                    body: body
+                })
+                    .then(respuesta => respuesta.json())
+                    .then(data => {
+                        //console.log(data);
+                        //console.log(data[0].translations[0].text);
+                        responseH2.textContent = data[0].translations[0].text;
+
+                    })
+            }
+        });
+    </script>
+</body>
+
+</html>

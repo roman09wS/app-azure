@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Consumo de API de Preguntas y Respuestas de Azure</title>
+</head>
+<body>
+
+<script>
+    data = {
+        "top":1,
+        "question": "Why Margie’s Travel?",
+        "includeUnstructuredSources": true,
+        "confidenceScoreThreshold": 0,
+        "answerSpanRequest": {
+            "enable": true,
+            "topAnswersWithSpan": 0,
+            "confidenceScoreThreshold": 1
+        },
+        "filters": {
+            "metadataFilter":{
+                "logicalOperation": "AND"
+            }
+        }
+    }
+
+    url = "https://demo-chat.cognitiveservices.azure.com/language/:query-knowledgebases?projectName=demo-chat&api-version=2021-10-01&deploymentName=production"
+    fetch(url,{
+        method: 'POST',
+        headers: {
+            "Ocp-Apim-Subscription-Key": "11962c46e9104dee9ad03c70f3eff32c",
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+        
+    })
+    .then(response => response.json())
+    .then(data =>{
+        console.log(data);
+    })
+    .catch(error => {
+        console.error("Error:", error);
+    });
+</script>
+
+</body>
+</html>
