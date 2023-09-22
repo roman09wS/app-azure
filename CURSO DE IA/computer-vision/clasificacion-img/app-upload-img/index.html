@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API de Clasificación de Aves</title>
+</head>
+<body>
+    <h1>Clasificación de Aves</h1>
+    <input type="file" id="fileInput">
+    <button id="classifyButton">Clasificar</button>
+    <div id="result"></div>
+
+    <script>
+        document.getElementById("classifyButton").addEventListener("click", function () {
+            const fileInput = document.getElementById("fileInput");
+            const resultDiv = document.getElementById("result");
+
+            if (fileInput.files.length === 0) {
+                resultDiv.innerHTML = "Por favor, seleccione una imagen.";
+                return;
+            }
+
+            const apiKey = "45256b4902f24462948fda7582f21d05";
+            const apiUrl = "https://service.cognitiveservices.azure.com/customvision/v3.0/Prediction/c8cd4be9-1862-4d12-9421-c33839da81bb/classify/iterations/clasificacion-aves/image";
+            const file = fileInput.files[0];
+
+            const formData = new FormData();
+            formData.append("file", file);
+
+            fetch(apiUrl, {
+                method: "POST",
+                headers: {
+                    "Prediction-Key": apiKey,
+                },
+                body: formData,
+            })
+            .then(response => response.json())
+            .then(data => {
+                resultDiv.innerHTML = JSON.stringify(data, null, 2);
+            })
+            .catch(error => {
+                resultDiv.innerHTML = "Hubo un error al hacer la solicitud: " + error.message;
+            });
+        });
+    </script>
+</body>
+</html>
